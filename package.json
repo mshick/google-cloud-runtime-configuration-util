@@ -12,7 +12,9 @@
     "lint": "eslint . --ext .ts",
     "test": "tsc --noEmit && jest",
     "clean": "rm -rf node_modules dist package-lock.json",
-    "debug": "node -r dotenv/config index.js"
+    "debug": "node -r dotenv/config index.js",
+    "prepublish": "yarn build && yarn test",
+    "version": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -49,6 +51,7 @@
     "jest": "^26.0.1",
     "nock": "^12.0.3",
     "prettier": "^2.0.5",
+    "standard-version": "^8.0.0",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   }

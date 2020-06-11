@@ -13,14 +13,14 @@ const variableListFixture: GrcVariableList = {
   ],
 }
 
-const expectedEnvOutput = `FOO_BAR='lala'
-FOO________BAR='lala'
-FOO_BAR='lalal'
-FO_OB_A_RR='lalal'
-FOO__BA_R='lala'
-FOO_BAR='lala'
-__FOO__BAR='lala'
-__FOO_BAR='lala'
+const expectedEnvOutput = `FOO_BAR=lala
+FOO________BAR=lala
+FOO_BAR=lalal
+FO_OB_A_RR=lalal
+FOO__BA_R=lala
+FOO_BAR=lala
+__FOO__BAR=lala
+__FOO_BAR=lala
 `
 
 beforeEach(() => {
