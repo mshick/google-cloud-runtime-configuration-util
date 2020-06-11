@@ -1,6 +1,6 @@
 {
   "name": "@mshick/google-cloud-runtime-configuration-util",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An easy cli for basic Google Cloud Runtime Configuration usage.",
   "main": "dist/grcutil.js",
   "types": "dist/index.d.ts",
