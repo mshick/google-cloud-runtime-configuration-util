@@ -73,21 +73,22 @@ const cli = (exports.cli = yargs
     },
   })
   .coerce('printFormat', (format: string) => format.toUpperCase())
-  .example('rcutil set my-project FOO bar', 'Set the variable FOO to value bar on my-project')
-  .example('rcutil get my-project foo', 'Get the value of variable FOO')
-  .example('rcutil unset my-project foo', 'Unset the value of variable FOO')
-  .example('rcutil print my-project', 'Print all variable names and values of my-project in env format.')
+  .example('grcutil set my-project FOO bar', 'Set the variable FOO to value bar on my-project')
+  .example('grcutil get my-project foo', 'Get the value of variable FOO')
+  .example('grcutil unset my-project foo', 'Unset the value of variable FOO')
+  .example('grcutil print my-project', 'Print all variable names and values of my-project in env format.')
   .example(
-    'rcutil printenv my-project --screaming',
-    'Print all variable names and values of my-project in typical SCREAMING_SNAKE_CASE env format.',
+    'grcutil print my-project --constant-case',
+    'Print all variable names and values of my-project in typical CONSTANT_CASE env format.',
   )
   .example(
-    'rcutil printenv my-project --project=bar',
+    'grcutil print my-project --print-format json',
+    'Print all variable names and values of my-project as a JSON object to stdout.',
+  )
+  .example(
+    'grcutil print my-project --project=bar',
     'Print all variable names and values of my-project in env format from the project bar.',
   )
-  .parserConfiguration({
-    'boolean-negation': false,
-  })
   .wrap(120)
   .recommendCommands()
   .epilogue('For more information, see https://github.com/mshick/google-cloud-runtime-configuration-util')

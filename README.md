@@ -23,8 +23,25 @@ $ npm install @mshick/google-cloud-runtime-configuration-util [--global]
 
 ## Usage
 
+Simple examples:
+
 ```sh
-$ rcutil --help
+$ grcutil set my-project FOO bar
+# bar
+$ grcutil get my-project FOO
+# bar
+$ grcutil print my-project
+# FOO=bar
+$ grcutil set my-project base64-val simpleval --to-base64
+# c2ltcGxldmFs
+$ grcutil print my-project --constant-case --print-format json
+# { "FOO": "bar", "BASE64_VAL": "c2ltcGxldmFs" }
+```
+
+For a full
+
+```sh
+$ grcutil --help
 ```
 
 ## Related
