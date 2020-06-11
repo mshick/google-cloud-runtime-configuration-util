@@ -14,7 +14,7 @@
     "clean": "rm -rf node_modules dist package-lock.json",
     "debug": "node -r dotenv/config index.js",
     "prepublish": "yarn build && yarn test",
-    "version": "standard-version"
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
