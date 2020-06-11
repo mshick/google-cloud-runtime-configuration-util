@@ -1,3 +1,4 @@
+import { runtimeconfig_v1beta1 } from 'googleapis';
 export interface GrcVariable {
     name: string;
     value: string | null;
@@ -13,6 +14,7 @@ export declare enum GrcPrintFormat {
     Env = "ENV",
     Json = "JSON"
 }
+export declare function createConfig(configName: string, projectId?: string): Promise<runtimeconfig_v1beta1.Schema$RuntimeConfig>;
 export declare function getValue(configName: string, variableName: string, projectId?: string): Promise<GrcVariable>;
 export declare function setValue(configName: string, variableName: string, value: string, projectId?: string): Promise<GrcVariable>;
 export declare function unsetValue(configName: string, variableName: string, projectId?: string): Promise<string>;

@@ -1,9 +1,32 @@
 #!/usr/bin/env node
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv = __importStar(require("dotenv"));
+const yargs = __importStar(require("yargs"));
+const getStdin = __importStar(require("get-stdin"));
 const grcutil_1 = require("./grcutil");
-const yargs = require("yargs");
 const cli = (exports.cli = yargs
+    .command('create <configName>', 'Create a new config with the given name.')
+    .command('pipe <configName>', 'Pipe an env-formatted string to populate the given config. [EXPERIMENTAL]')
     .command('get <configName> <variableName>', 'Get a variable with the given name.')
     .command('unset <configName> <variableName>', 'Unset a variable with the given name.')
     .command('set <configName> <variableName> <variableValue>', 'Set a variable with the given name and value.')
@@ -48,6 +71,8 @@ const cli = (exports.cli = yargs
     },
 })
     .coerce('printFormat', (format) => format.toUpperCase())
+    .example('grcutil create my-project', 'Create a project named my-project')
+    .example('echo "FOO=bar" | grcutil pipe my-project', 'Pipe env-formatted stdin to my-project as variables. [EXPERIMENTAL]')
     .example('grcutil set my-project FOO bar', 'Set the variable FOO to value bar on my-project')
     .example('grcutil get my-project foo', 'Get the value of variable FOO')
     .example('grcutil unset my-project foo', 'Unset the value of variable FOO')
@@ -65,6 +90,20 @@ async function main(argv) {
     const command = opts._[0];
     try {
         let output;
+        if (command === 'create') {
+            const { configName, project } = opts;
+            const result = await grcutil_1.createConfig(configName, project);
+            output = result.name;
+        }
+        if (command === 'pipe') {
+            const { configName, project } = opts;
+            const data = await getStdin.buffer();
+            const parsed = dotenv.parse(data);
+            const promises = Object.keys(parsed).map((v) => grcutil_1.setValue(configName, v, parsed[v], project));
+            await Promise.all(promises);
+            const result = await grcutil_1.listValues(configName, project);
+            output = grcutil_1.printVariableList(result, grcutil_1.GrcPrintFormat.Env, grcutil_1.GrcPrintVariableFormat.Source);
+        }
         if (command === 'get') {
             const { configName, variableName, project } = opts;
             const result = await grcutil_1.getValue(configName, variableName, project);

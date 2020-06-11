@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
+import * as dotenv from 'dotenv'
+import * as yargs from 'yargs'
+import * as getStdin from 'get-stdin'
 import {
+  createConfig,
   getValue,
   setValue,
   unsetValue,
@@ -9,7 +13,6 @@ import {
   GrcPrintVariableFormat,
   GrcPrintFormat,
 } from './grcutil'
-import * as yargs from 'yargs'
 
 interface GrcutilCliOptions {
   configName: string
@@ -21,6 +24,8 @@ interface GrcutilCliOptions {
   toBase64: boolean
 }
 
+type GrcutilCliCreateOptions = Pick<GrcutilCliOptions, 'configName' | 'project'>
+type GrcutilCliPipeOptions = Pick<GrcutilCliOptions, 'configName' | 'project'>
 type GrcutilCliGetOptions = Pick<GrcutilCliOptions, 'configName' | 'variableName' | 'project'>
 type GrcutilCliSetOptions = Pick<
   GrcutilCliOptions,
@@ -29,6 +34,8 @@ type GrcutilCliSetOptions = Pick<
 type GrcutilCliPrintOptions = Pick<GrcutilCliOptions, 'configName' | 'constantCase' | 'printFormat' | 'project'>
 
 const cli = (exports.cli = yargs
+  .command('create <configName>', 'Create a new config with the given name.')
+  .command('pipe <configName>', 'Pipe an env-formatted string to populate the given config. [EXPERIMENTAL]')
   .command('get <configName> <variableName>', 'Get a variable with the given name.')
   .command('unset <configName> <variableName>', 'Unset a variable with the given name.')
   .command('set <configName> <variableName> <variableValue>', 'Set a variable with the given name and value.')
@@ -73,6 +80,11 @@ const cli = (exports.cli = yargs
     },
   })
   .coerce('printFormat', (format: string) => format.toUpperCase())
+  .example('grcutil create my-project', 'Create a project named my-project')
+  .example(
+    'echo "FOO=bar" | grcutil pipe my-project',
+    'Pipe env-formatted stdin to my-project as variables. [EXPERIMENTAL]',
+  )
   .example('grcutil set my-project FOO bar', 'Set the variable FOO to value bar on my-project')
   .example('grcutil get my-project foo', 'Get the value of variable FOO')
   .example('grcutil unset my-project foo', 'Unset the value of variable FOO')
@@ -101,6 +113,22 @@ async function main(argv: string[]): Promise<void> {
 
   try {
     let output
+
+    if (command === 'create') {
+      const {configName, project} = opts as GrcutilCliCreateOptions
+      const result = await createConfig(configName, project)
+      output = result.name
+    }
+
+    if (command === 'pipe') {
+      const {configName, project} = opts as GrcutilCliPipeOptions
+      const data = await getStdin.buffer()
+      const parsed = dotenv.parse(data)
+      const promises = Object.keys(parsed).map((v) => setValue(configName, v, parsed[v], project))
+      await Promise.all(promises)
+      const result = await listValues(configName, project)
+      output = printVariableList(result, GrcPrintFormat.Env, GrcPrintVariableFormat.Source)
+    }
 
     if (command === 'get') {
       const {configName, variableName, project} = opts as GrcutilCliGetOptions

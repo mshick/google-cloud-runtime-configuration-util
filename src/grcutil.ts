@@ -30,6 +30,9 @@ export enum GrcPrintFormat {
 }
 
 // Shorten for convenience and readability, bind context
+const createRcConfig = (params: runtimeconfig_v1beta1.Params$Resource$Projects$Configs$Create) =>
+  runtimeconfig.projects.configs.create(params)
+
 const getConfig = (params: runtimeconfig_v1beta1.Params$Resource$Projects$Configs$Get) =>
   runtimeconfig.projects.configs.get(params)
 
@@ -79,6 +82,46 @@ async function ensureProjectId(projectId?: string): Promise<string> {
   }
 
   return projectId
+}
+
+export async function createConfig(
+  configName: string,
+  projectId?: string,
+): Promise<runtimeconfig_v1beta1.Schema$RuntimeConfig> {
+  projectId = await ensureProjectId(projectId)
+  const authClient = await auth.getClient()
+
+  const configResourceName = getConfigResourceName(projectId, configName)
+
+  let configExists
+
+  try {
+    await getConfig({
+      auth: authClient,
+      name: configResourceName,
+    })
+    configExists = true
+  } catch (err) {
+    if (err.code === 404) {
+      configExists = false
+    } else {
+      throw err
+    }
+  }
+
+  if (configExists) {
+    throw new Error(`Config ${configName} already exists`)
+  }
+
+  const response = await createRcConfig({
+    auth: authClient,
+    parent: `projects/${projectId}`,
+    requestBody: {
+      name: `projects/${projectId}/configs/${configName}`,
+    },
+  })
+
+  return response.data
 }
 
 export async function getValue(configName: string, variableName: string, projectId?: string): Promise<GrcVariable> {

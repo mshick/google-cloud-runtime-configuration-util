@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.printVariableList = exports.listValues = exports.unsetValue = exports.setValue = exports.getValue = exports.GrcPrintFormat = exports.GrcPrintVariableFormat = void 0;
+exports.printVariableList = exports.listValues = exports.unsetValue = exports.setValue = exports.getValue = exports.createConfig = exports.GrcPrintFormat = exports.GrcPrintVariableFormat = void 0;
 const googleapis_1 = require("googleapis");
 const helpers_1 = require("./helpers");
 const runtimeconfig = googleapis_1.google.runtimeconfig('v1beta1');
@@ -18,6 +18,7 @@ var GrcPrintFormat;
     GrcPrintFormat["Json"] = "JSON";
 })(GrcPrintFormat = exports.GrcPrintFormat || (exports.GrcPrintFormat = {}));
 // Shorten for convenience and readability, bind context
+const createRcConfig = (params) => runtimeconfig.projects.configs.create(params);
 const getConfig = (params) => runtimeconfig.projects.configs.get(params);
 const getVariable = (params) => runtimeconfig.projects.configs.variables.get(params);
 const createVariable = (params) => runtimeconfig.projects.configs.variables.create(params);
@@ -51,6 +52,39 @@ async function ensureProjectId(projectId) {
     }
     return projectId;
 }
+async function createConfig(configName, projectId) {
+    projectId = await ensureProjectId(projectId);
+    const authClient = await auth.getClient();
+    const configResourceName = getConfigResourceName(projectId, configName);
+    let configExists;
+    try {
+        await getConfig({
+            auth: authClient,
+            name: configResourceName,
+        });
+        configExists = true;
+    }
+    catch (err) {
+        if (err.code === 404) {
+            configExists = false;
+        }
+        else {
+            throw err;
+        }
+    }
+    if (configExists) {
+        throw new Error(`Config ${configName} already exists`);
+    }
+    const response = await createRcConfig({
+        auth: authClient,
+        parent: `projects/${projectId}`,
+        requestBody: {
+            name: `projects/${projectId}/configs/${configName}`,
+        },
+    });
+    return response.data;
+}
+exports.createConfig = createConfig;
 async function getValue(configName, variableName, projectId) {
     try {
         projectId = await ensureProjectId(projectId);

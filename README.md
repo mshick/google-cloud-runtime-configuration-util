@@ -10,6 +10,8 @@ The focus here is on a clear, easy-to-use interface for the most commonly needed
 - `set` - Sets a variable
 - `unset` - Unset a variable
 - `print` - Print the whole config to stdout in env or json format
+- `create` - Create a new config with the provided name
+- `pipe` - Pipe env-formatted stdin to the named config, loading it with variables. [EXPERIMENTAL]
 
 ## Installation
 
@@ -36,9 +38,11 @@ $ grcutil set my-project base64-val simpleval --to-base64
 # c2ltcGxldmFs
 $ grcutil print my-project --constant-case --print-format json
 # { "FOO": "bar", "BASE64_VAL": "c2ltcGxldmFs" }
+$ echo 'FOO=bar' | grcutil pipe my-project
+# FOO=bar
 ```
 
-For a full
+For a full list of functionality and more examples:
 
 ```sh
 $ grcutil --help
