@@ -1,0 +1,55 @@
+{
+  "name": "@mshick/google-cloud-runtime-configuration-util",
+  "version": "1.0.0",
+  "description": "An easy to use cli for basic Google Cloud Runtime Configuration usage.",
+  "main": "dist/grcutil.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "grcutil": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "tsc --noEmit && jest",
+    "clean": "rm -rf node_modules dist package-lock.json",
+    "debug": "node -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mshick/google-cloud-runtime-configuration-util.git"
+  },
+  "keywords": [
+    "Google Cloud",
+    "Runtime Configuration",
+    "env",
+    "variables",
+    "configurator",
+    "dotenv",
+    "rcloadenv"
+  ],
+  "author": "Michael Shick <m@shick.us>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mshick/google-cloud-runtime-configuration-util/issues"
+  },
+  "homepage": "https://github.com/mshick/google-cloud-runtime-configuration-util#readme",
+  "dependencies": {
+    "google-auth-library": "^6.0.1",
+    "googleapis": "^52.1.0",
+    "yargs": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "@types/node": "^12.12.42",
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "jest": "^26.0.1",
+    "nock": "^12.0.3",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.3"
+  }
+}

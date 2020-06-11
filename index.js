@@ -1,0 +1,6 @@
+console.log(process.env.NEW_VAR)
+console.log(process.env.SAMPLE_B64)
+console.log(process.env.FOO)
+console.log(process.env.APP_NAME)
+console.log(process.env.BAR____BEE)
+console.log(process.env.SOMESHIT)
