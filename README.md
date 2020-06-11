@@ -1,18 +1,32 @@
 # Google Cloud Runtime Configuration Util (grcutil)
 
-> An easy to use cli for basic [Google Cloud Runtime Configuration](https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/) activities.
+> An easy cli for basic [Google Cloud Runtime Configuration](https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/) usage.
+
+## Features
+
+The focus here is on a clear, easy-to-use interface for the most commonly needed functions of the Runtime Configuration service. Install and take a look at at the help text for detail.
+
+- `get` - Gets a variable from a Runtime Configuration config
+- `set` - Sets a variable
+- `unset` - Unset a variable
+- `print` - Print the whole config to stdout in env or json format
+
+## Installation
+
+```sh
+$ yarn add @mshick/google-cloud-runtime-configuration-util [--global]
+```
+
+```sh
+$ npm install @mshick/google-cloud-runtime-configuration-util [--global]
+```
 
 ## Usage
 
 ```sh
-$ rcutil [command] [config] [arg1] [arg2] [--flags] [--project]
-$ rcutil set my-project foo bar
-# FOO=bar
-$ rcutil set my-project cute puppy --no-uppercase
-# cute=puppy
-$ rcutil get my-project foo
-# bar
-$ rcutil print my-project
-# FOO=bar
-# cute=puppy
+$ rcutil --help
 ```
+
+## Related
+
+- [@google-cloud/rcloadenv](https://github.com/googleapis/nodejs-rcloadenv)
