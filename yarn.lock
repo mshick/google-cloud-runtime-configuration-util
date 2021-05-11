@@ -509,13 +509,6 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/concat-stream@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@types/concat-stream/-/concat-stream-1.6.0.tgz#394dbe0bb5fee46b38d896735e8b68ef2390d00d"
-  integrity sha1-OU2+C7X+5Gs42JZzXoto7yOQ0A0=
-  dependencies:
-    "@types/node" "*"
-
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -3405,9 +3398,9 @@ lodash.templatesettings@^4.0.0:
     lodash._reinterpolate "^3.0.0"
 
 lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loud-rejection@^1.0.0:
   version "1.6.0"
